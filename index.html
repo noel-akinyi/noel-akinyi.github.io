@@ -1185,7 +1185,7 @@
       <p class="lead">Let's find it together — and make it impossible to ignore.</p>
 
       <div class="contact-links">
-        <a href="/cdn-cgi/l/email-protection#7a1b11131403130d1b0915141d1b3a1d171b131654191517" class="contact-link">
+        <a href="/cdn-cgi/l/email-protection#abcac0c2c5d2c2dccad8c4c5cccaebccc6cac2c785c8c4c6" class="contact-link">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/>
           </svg>
@@ -1198,7 +1198,7 @@
           </svg>
           LinkedIn
         </a>
-        <a href="https://github.com/Akinyi-analytics" class="contact-link" target="_blank">
+        <a href="https://github.com/noel-akinyi" class="contact-link" target="_blank">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>
           </svg>
@@ -1215,7 +1215,55 @@
       </div>
 
       <div class="divider-line"></div>
+
+      <!-- Comments Box -->
+      <div class="comments-section reveal" style="max-width:640px;margin:0 auto 60px;">
+        <div class="section-tag" style="justify-content:center;margin-bottom:24px;">Leave a Note</div>
+        <div id="comments-list" style="margin-bottom:32px;display:flex;flex-direction:column;gap:16px;"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <input id="comment-name" type="text" placeholder="Your name" style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;letter-spacing:0.05em;"/>
+          <textarea id="comment-text" placeholder="Leave a comment, question or thought..." rows="4" style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;letter-spacing:0.05em;resize:vertical;"></textarea>
+          <button onclick="submitComment()" style="align-self:flex-start;padding:12px 32px;border:1px solid var(--gold);color:var(--gold);background:transparent;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;transition:background 0.3s,color 0.3s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--black)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">Post Comment</button>
+          <p id="comment-status" style="font-size:0.8rem;color:var(--muted);letter-spacing:0.1em;min-height:20px;"></p>
+        </div>
+      </div>
+
+      <div class="divider-line"></div>
       <p class="footer-note">© 2025 Noel Akinyi Wasonga · Built with intention</p>
+
+      <script>
+        async function submitComment() {
+          const name = document.getElementById('comment-name').value.trim();
+          const text = document.getElementById('comment-text').value.trim();
+          const status = document.getElementById('comment-status');
+          if (!name || !text) {
+            status.style.color = 'var(--rose)';
+            status.textContent = 'Please fill in both your name and comment.';
+            return;
+          }
+          status.style.color = 'var(--muted)';
+          status.textContent = 'Sending...';
+          try {
+            const res = await fetch('https://formspree.io/f/mjgpwgya', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({ name: name, message: text })
+            });
+            if (res.ok) {
+              status.style.color = 'var(--gold)';
+              status.textContent = 'Thank you — your note has been sent.';
+              document.getElementById('comment-name').value = '';
+              document.getElementById('comment-text').value = '';
+            } else {
+              status.style.color = 'var(--rose)';
+              status.textContent = 'Something went wrong. Please try again.';
+            }
+          } catch(e) {
+            status.style.color = 'var(--rose)';
+            status.textContent = 'Could not send. Please check your connection.';
+          }
+        }
+      </script>
     </div>
   </section>
 
@@ -1316,13 +1364,4 @@
             { target: 10, suffix: '+' }
           ];
           statNums.forEach((el, i) => {
-            setTimeout(() => countUp(el, configs[i].target, configs[i].suffix, 1200), i * 200);
-          });
-        }
-      });
-    }, { threshold: 0.5 });
-    if (statsEl) statObs.observe(statsEl);
-
-  </script>
-</body>
-</html>
+            setTimeout(() => countUp(el, configs[i].target, configs[i].suff
